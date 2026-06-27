@@ -1,0 +1,96 @@
+{
+  "nodes": [
+    { "id": "phys.vitals.hr", "type": "sensor" },
+    { "id": "phys.vitals.spo2", "type": "sensor" },
+    { "id": "phys.resp.rr", "type": "sensor" },
+    { "id": "phys.temp.core", "type": "sensor" },
+    { "id": "phys.temp.skin", "type": "sensor" },
+    { "id": "phys.vitals.ecg", "type": "sensor" },
+    { "id": "phys.neuro.eeg_bands", "type": "sensor" },
+    { "id": "phys.motion.imu", "type": "sensor" },
+    { "id": "phys.motion.emg", "type": "sensor" },
+    { "id": "phys.resp.etco2", "type": "sensor" },
+
+    { "id": "phys.derived.hrv", "type": "derived" },
+    { "id": "phys.derived.shock_index", "type": "derived" },
+    { "id": "phys.derived.exertion_index", "type": "derived" },
+    { "id": "phys.derived.oxygenation_reserve", "type": "derived" },
+    { "id": "phys.derived.thermal_stress", "type": "derived" },
+    { "id": "phys.derived.gait_stability", "type": "derived" },
+    { "id": "phys.derived.cognitive_load", "type": "derived" },
+    { "id": "phys.derived.fatigue_index", "type": "derived" },
+    { "id": "phys.derived.hydration_status", "type": "derived" },
+    { "id": "phys.derived.metabolic_rate", "type": "derived" },
+
+    { "id": "state.cv", "type": "state" },
+    { "id": "state.resp", "type": "state" },
+    { "id": "state.thermal", "type": "state" },
+    { "id": "state.hydration", "type": "state" },
+    { "id": "state.fatigue", "type": "state" },
+    { "id": "state.overall_health", "type": "state" },
+
+    { "id": "ctrl.env.o2", "type": "control" },
+    { "id": "ctrl.env.co2_scrubber", "type": "control" },
+    { "id": "ctrl.env.thermal", "type": "control" },
+    { "id": "ctrl.ops.workload", "type": "control" },
+    { "id": "ctrl.ops.hydration", "type": "control" },
+    { "id": "ctrl.ops.alerts", "type": "control" }
+  ],
+  "edges": [
+    { "from": "phys.vitals.hr", "to": "phys.derived.hrv" },
+    { "from": "phys.vitals.hr", "to": "phys.derived.shock_index" },
+    { "from": "phys.vitals.hr", "to": "phys.derived.exertion_index" },
+
+    { "from": "phys.vitals.ecg", "to": "phys.derived.hrv" },
+
+    { "from": "phys.vitals.spo2", "to": "phys.derived.oxygenation_reserve" },
+    { "from": "phys.resp.rr", "to": "phys.derived.oxygenation_reserve" },
+    { "from": "phys.resp.etco2", "to": "phys.derived.oxygenation_reserve" },
+
+    { "from": "phys.temp.core", "to": "phys.derived.thermal_stress" },
+    { "from": "phys.temp.skin", "to": "phys.derived.thermal_stress" },
+
+    { "from": "phys.motion.imu", "to": "phys.derived.gait_stability" },
+    { "from": "phys.motion.imu", "to": "phys.derived.exertion_index" },
+    { "from": "phys.motion.emg", "to": "phys.derived.exertion_index" },
+
+    { "from": "phys.neuro.eeg_bands", "to": "phys.derived.cognitive_load" },
+    { "from": "phys.neuro.eeg_bands", "to": "phys.derived.fatigue_index" },
+
+    { "from": "phys.hydration.index", "to": "phys.derived.hydration_status" },
+
+    { "from": "phys.derived.hrv", "to": "state.cv" },
+    { "from": "phys.derived.shock_index", "to": "state.cv" },
+
+    { "from": "phys.derived.oxygenation_reserve", "to": "state.resp" },
+
+    { "from": "phys.derived.thermal_stress", "to": "state.thermal" },
+
+    { "from": "phys.derived.hydration_status", "to": "state.hydration" },
+
+    { "from": "phys.derived.cognitive_load", "to": "state.fatigue" },
+    { "from": "phys.derived.fatigue_index", "to": "state.fatigue" },
+    { "from": "phys.derived.exertion_index", "to": "state.fatigue" },
+
+    { "from": "state.cv", "to": "state.overall_health" },
+    { "from": "state.resp", "to": "state.overall_health" },
+    { "from": "state.thermal", "to": "state.overall_health" },
+    { "from": "state.hydration", "to": "state.overall_health" },
+    { "from": "state.fatigue", "to": "state.overall_health" },
+    { "from": "phys.derived.metabolic_rate", "to": "state.overall_health" },
+
+    { "from": "state.resp", "to": "ctrl.env.o2" },
+    { "from": "phys.derived.oxygenation_reserve", "to": "ctrl.env.o2" },
+    { "from": "phys.derived.oxygenation_reserve", "to": "ctrl.env.co2_scrubber" },
+
+    { "from": "state.thermal", "to": "ctrl.env.thermal" },
+    { "from": "phys.derived.thermal_stress", "to": "ctrl.env.thermal" },
+
+    { "from": "state.hydration", "to": "ctrl.ops.hydration" },
+
+    { "from": "state.fatigue", "to": "ctrl.ops.workload" },
+    { "from": "phys.derived.cognitive_load", "to": "ctrl.ops.workload" },
+
+    { "from": "state.overall_health", "to": "ctrl.ops.alerts" }
+  ]
+}
