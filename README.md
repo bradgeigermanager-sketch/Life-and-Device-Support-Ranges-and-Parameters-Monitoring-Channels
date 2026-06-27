@@ -1,0 +1,1 @@
+# Life-and-Device-Support-Ranges-and-Parameters-Monitoring-Channels
